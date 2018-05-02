@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>WAM Worksheet</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <h1>Center of Balance Worksheet</h1>
@@ -44,12 +45,13 @@
                 </tbody>
             </table>
             <p>Calculated Center of Balance: 
-                <span v-if="!(cb !== cb && typeof cb === 'number')">{{ cb }}</span>
+                <span v-if="!(isNaN(getCB))">{{ getCB }}</span>
                 <span v-else>0</span>
                  from forward edge</p>
             <button type="button" v-on:click="addAxle">Add Axle</button>
             <button type="button" v-on:click="removeAxle" v-bind:disabled="axles.length < 3">Remove Axle</button>
             <button type="button" v-on:click="print">Print</button>
+            <button type="button" v-on:click="quit">Quit</button>
         </form>
     </div><!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

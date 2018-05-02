@@ -1,3 +1,6 @@
+const electron = require('electron');
+const remote = electron.remote;
+
 const app = new Vue({
     el: '#app',
     data: {
@@ -17,7 +20,6 @@ const app = new Vue({
         ],
         total: {
             weight: 0,
-            arm: 0,
             moment: 0
         }
     },
@@ -25,9 +27,11 @@ const app = new Vue({
         getTotal() {
             this.total.weight = this.axles.map((axles)=> axles.weight).reduce((x,y)=> parseInt(x) + parseInt(y));
             this.total.moment = this.axles.map((axles)=> axles.moment).reduce((x,y)=> parseInt(x) + parseInt(y));
-            console.log(this.total);
-            this.cb = (this.total.moment / this.total.weight).toFixed(2);
             return this.total;
+        },
+        getCB() {
+            this.cb = (this.total.moment / this.total.weight).toFixed(2);
+            return this.cb;
         }
     },
     methods: {
@@ -38,7 +42,6 @@ const app = new Vue({
         addAxle: function() {
             event.preventDefault();
             this.axles.push({ weight: 0, arm: 0, moment: 0 })
-            console.log('adding axle');
         },
         removeAxle: function() {
             if(this.axles.length < 3) {
@@ -49,6 +52,10 @@ const app = new Vue({
         },
         print: function() {
             console.log('calling printer');
+        },
+        quit: function() {
+            const window = remote.getCurrentWindow();
+            window.close();
         }
     }
 });
