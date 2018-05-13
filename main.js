@@ -5,7 +5,7 @@ const path = require('path');
 let mainWindow;
 
 app.on('ready', ()=> {
-    mainWindow = new BrowserWindow({ width: 800, height: 800});
+    mainWindow = new BrowserWindow({ width: 800, height: 600, minWidth: 800, minHeight: 600});
 
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname,'./index.html'),
@@ -18,12 +18,4 @@ app.on('ready', ()=> {
 
 app.on('window-all-closed', () => {
     app.quit();
-});
-
-app.on('activate', () => {
-// On macOS it's common to re-create a window in the app when the
-// dock icon is clicked and there are no other windows open.
-    if (mainWindow === null) {
-        createWindow();
-    }
 });

@@ -6,54 +6,65 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <h1>Center of Balance Worksheet</h1>
+    <header>
+            <h1>Center of Balance Worksheet</h1>
+    </header>
+    <div class="wrapper">
 
-    <h2>Instructions:</h2>
+        <h2>Instructions:</h2>
 
-    <p>Center of Balance (C/B) and axle distances are measured from the furthest point out from the front of the vehicle</p>
+        <p>Center of Balance (C/B) and axle distances are measured from the furthest point out from the front of the vehicle</p>
 
-    <p>Fill out all the blanks.  Click on <strong>Add Axle</strong> if you need more than two axles</strong></p>
-    <div id="app">
-        <form>
-            <p> 
-                <label for="chalk">Chalk #: </label>
-                <input type="text" v-model="chalk">
-                <p v-if="chalk">Chalk: {{ chalk }}</p>
-            </p>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Axle</td>
-                        <td>Weight</td>
-                        <td>Arm</td>
-                        <td>Moment</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(axle, index) in axles">
-                        <td>Axle {{ index + 1 }} <span v-if="index === 0">or Tongue</span></td>
-                        <td><input type="text" v-model="axle.weight"></td>
-                        <td><input type="text" v-model="axle.arm"></td>
-                        <td v-if="axle.weight != 0 && axle.arm != 0">{{ getMoment(axle) }}</td>
-                    </tr>
-                    <tr>
-                        <td>Total</td>
-                        <td><span v-if="getTotal.weight">{{ getTotal.weight }}</span></td>
-                        <td></td>
-                        <td><span v-if="getTotal.moment">{{ getTotal.moment }}</span></td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>Calculated Center of Balance: 
-                <span v-if="!(isNaN(getCB))">{{ getCB }}</span>
-                <span v-else>0</span>
-                 from forward edge</p>
-            <button type="button" v-on:click="addAxle">Add Axle</button>
-            <button type="button" v-on:click="removeAxle" v-bind:disabled="axles.length < 3">Remove Axle</button>
-            <button type="button" v-on:click="print">Print</button>
-            <button type="button" v-on:click="quit">Quit</button>
-        </form>
-    </div><!-- development version, includes helpful console warnings -->
+        <p>Fill out the weight and arm to find the moment.  Click on <strong>Add Axle</strong> if you need more than two axles</p>
+        <div id="app">
+            <form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Axle</th>
+                            <th>Weight</th>
+                            <th>Arm</th>
+                            <th>Moment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(axle, index) in axles">
+                            <td>Axle {{ index + 1 }} <span v-if="index === 0">or Tongue</span></td>
+                            <td><input type="text" 
+                                v-model="axle.weight" 
+                                v-on:focus="focusWithin" 
+                                v-on:focusout="focusWithout">
+                            </td>
+                            <td><input type="text" 
+                                v-model="axle.arm" 
+                                v-on:focus="focusWithin" 
+                                v-on:focusout="focusWithout">
+                            </td>
+                            <td><span  v-if="axle.weight != 0 && axle.arm != 0">{{ getMoment(axle) }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td><span v-if="getTotal.weight">{{ getTotal.weight }}</span></td>
+                            <td class="grey"></td>
+                            <td><span v-if="getTotal.moment">{{ getTotal.moment }}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Calculated Gross Weight: 
+                        <span v-if="getTotal.weight">{{ getTotal.weight }}</span>
+                        <span v-else>0</span> lbs</p>
+                <p>Calculated Center of Balance: 
+                    <span v-if="!(isNaN(getCB))">{{ getCB }}</span>
+                    <span v-else>0</span>
+                    inches from forward edge</p>
+                <button type="button" v-on:click="addAxle">Add Axle</button>
+                <button type="button" v-on:click="removeAxle" v-bind:disabled="axles.length < 3">Remove Axle</button>
+                <button type="button" v-on:click="reset">Reset</button>
+                <button type="button" v-on:click="quit" class="danger">Quit</button>
+            </form>
+        </div>
+    </div>  
+    <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="index.js"></script>
 </body>
